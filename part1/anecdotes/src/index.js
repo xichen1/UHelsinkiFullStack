@@ -10,9 +10,9 @@ const App = (props) => {
     setSelected(Math.floor(Math.random() * 6))
   }
 
-  const setpoints = (num) => {
+  const setpoints = () => {
     const copy = [... points]
-    copy[num] += 1
+    copy[selected] += 1
     setPoints(copy)
   }
   
@@ -28,7 +28,7 @@ const App = (props) => {
         it has {points[selected]} votes
       </div>
       <div>
-        <button onClick={() => setpoints(selected)}>vote</button>
+        <button onClick={setpoints}>vote</button>
         <button onClick={setselect}>next anecdote</button>
       </div>
 
