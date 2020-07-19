@@ -1,2 +1,0 @@
-# UHelsinkiFullStack
-course exercise
