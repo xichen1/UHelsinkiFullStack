@@ -48,7 +48,8 @@ const App = () => {
           setNewNumber('')
         })
         .catch(error => {
-          setInfo({message: 'error', success:false})
+          setInfo({message: error.response.data.error, success:false})
+          console.log(error.response.data.error)
         })
       pass = true
     } else {
