@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 
-const url = 'mongodb+srv://fullstack:159753abc@cluster0.xetx1.mongodb.net/phonebook?retryWrites=true&w=majority'
+const url = process.env.MOG_URI
 
 mongoose.set('useCreateIndex', true)
 
