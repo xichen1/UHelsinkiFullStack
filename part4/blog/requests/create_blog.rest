@@ -1,8 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjVmMjllMWZkMDUyNmViZTBiOGM1ZmRmYiIsImlhdCI6MTU5NjU4MDM1NX0.EeEQkrFltTslyEPfAyW-9rmOTjusom65-FzsIbsAdoM
 
 {
-    "title": "haha",
-    "author": "bb",
+    "title": "FIRST",
+    "author": "root",
     "url": "q3rew"
 }
