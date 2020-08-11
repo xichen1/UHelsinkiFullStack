@@ -1,22 +1,31 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import Toggleable from './components/Toggleable'
+import NewBlog from './components/NewBlog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [newblog, setNewBlog] = useState('')
-  const [newauthor, setNewAuthor] = useState('')
-  const [newurl, setNewUrl] = useState('')
   const [info, setInfo] = useState('')
 
+  const compareLike = (bloga, blogb) => {
+    if (bloga.likes < blogb.likes) {
+      return 1
+    }
+    return -1
+  }
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
+    blogService.getAll().then(blogs => {
+      blogs.sort(compareLike)
       setBlogs(blogs)
+    }
     )
   }, [])
 
@@ -50,10 +59,9 @@ const App = () => {
     }
   }
 
-  const handleNewBlog = async (event) => {
-    event.preventDefault()
+  const addBlog = async (blogObject) => {
     try {
-      const res = await blogService.postnew({ title: newblog, author: newauthor, url: newurl })
+      const res = await blogService.postnew(blogObject)
       setBlogs(blogs.concat(res))
       setInfo(res.title, res.author)
       setTimeout(() => {
@@ -65,7 +73,6 @@ const App = () => {
         setInfo('')
       }, 5000)
     }
-
   }
 
 
@@ -78,57 +85,40 @@ const App = () => {
   let afterlog = null
   if (user === null) {
     afterlog = (
-      <form onSubmit={handleLogin}>
-        <div>
-          username
+      <Toggleable buttonname='show login'>
+        <form onSubmit={handleLogin}>
+          <div>
+            username
           <input type="text"
-            value={username}
-            name='username'
-            onChange={({ target }) =>
-              setUsername(target.value)}
-          />
-        </div>
-        <div>
-          password
+              value={username}
+              name='username'
+              onChange={({ target }) =>
+                setUsername(target.value)}
+            />
+          </div>
+          <div>
+            password
           <input type="password"
-            value={password}
-            name='password'
-            onChange={
-              ({ target }) => setPassword(target.value)
-            }
-          />
-        </div>
-        <button type='submit'>login</button>
-      </form>
+              value={password}
+              name='password'
+              onChange={
+                ({ target }) => setPassword(target.value)
+              }
+            />
+          </div>
+          <button type='submit'>login</button>
+        </form>
+      </Toggleable>
+
     )
   } else {
     afterlog = (
       <div>
         <div>
-          <h3>Create new</h3>
-          <form onSubmit={handleNewBlog}>
-            <div>
-              title: <input
-                type='text'
-                value={newblog}
-                onChange={({ target }) => setNewBlog(target.value)}
-              />
-            </div>
-            <div>
-              author: <input type='text'
-                value={newauthor}
-                onChange={({ target }) => setNewAuthor(target.value)}
-              />
-            </div>
-            <div>
-              url: <input type='text'
-                value={newurl}
-                onChange={({ target }) => setNewUrl(target.value)}
-              />
-            </div>
-
-            <button type='submit'>post</button>
-          </form>
+          <Toggleable buttonname='show create new'>
+            <h3>Create new</h3>
+            <NewBlog addBlog={addBlog} />
+          </Toggleable>
         </div>
         <div>
           {blogs.map(blog =>
