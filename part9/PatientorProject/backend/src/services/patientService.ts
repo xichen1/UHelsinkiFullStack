@@ -1,4 +1,5 @@
-import {PatientEntry} from '../types';
+import {PatientEntry, NewPatientEntry} from '../types';
+import uuid = require('uuid');
 
 import patientData from '../../data/patients';
 
@@ -14,4 +15,18 @@ const getPatientDate = ():Omit<PatientEntry, 'ssn'>[] => {
   });
 };
 
-export default {getPatientDate};
+const addNewPatient = (newPatient: NewPatientEntry): PatientEntry => {
+  const newPatientdata = {
+    id: uuid.v4(),
+    ...newPatient
+  };
+
+  patientData.push(newPatientdata);
+
+  return newPatientdata;
+};
+
+export default {
+  getPatientDate,
+  addNewPatient
+};
